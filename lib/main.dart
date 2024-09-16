@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:focus_todo/CalenderScreen.dart';
-import 'package:focus_todo/FocusScreen.dart';
-import 'package:focus_todo/HomeScreen.dart';
-import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
-import './ProfileScreen.dart';
-import 'AddScreen.dart';
+import 'CalenderScreen.dart';
+import 'FocusScreen.dart';
+import 'HomeScreen.dart';
+import 'ProfileScreen.dart';
 
 void main() {
   runApp(myApp());
@@ -16,59 +14,136 @@ Widget myApp() {
   return MaterialApp(
     title: "Focus Todo",
     theme: ThemeData.dark(),
-    home: Screen(),
+    home: const Screen(),
   );
 }
 
-class Screen extends StatelessWidget {
+List navBarScreens = [
+  HomeScreen(), const CalenderScreen(), // AddScreen(),
+  FocusScreen(), ProfileScreen(),
+];
+List<BottomNavigationBarItem> navBarItems = [
+  BottomNavigationBarItem(
+      icon: SvgPicture.asset("lib/assets/images/home.svg"), label: "Home"),
+  BottomNavigationBarItem(
+      icon: SvgPicture.asset("lib/assets/images/calendar.svg"),
+      label: "Calendar"),
+  // BottomNavigationBarItem(
+  //   icon: Icon(Icons.add, color: Colors.white),
+  //   label: "Add",
+  // ),
+  BottomNavigationBarItem(
+      icon: SvgPicture.asset("lib/assets/images/clock.svg"), label: "Focus"),
+  BottomNavigationBarItem(
+    icon: SvgPicture.asset("lib/assets/images/user.svg"),
+    label: "Profile",
+  ),
+];
+
+class Screen extends StatefulWidget {
   const Screen({super.key});
+
+  @override
+  State<Screen> createState() => _ScreenState();
+}
+
+class _ScreenState extends State<Screen> {
+  int selectedScreen = 1;
+
+  @override
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: PersistentTabView(
-        context,
+    //     animationSettings: const NavBarAnimationSettings(
+    //       screenTransitionAnimation: ScreenTransitionAnimationSettings(
+    //         // Screen transition animation on change of selected tab.
+    //         animateTabTransition: true,
+    //         duration: Duration(milliseconds: 200),
+    //         screenTransitionAnimationType: ScreenTransitionAnimationType.fadeIn,
+    return Scaffold(
+      body: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 300),
+        child: navBarScreens[selectedScreen],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          print("Clicked -> FloatingActionButton");
+          showDialog(
+            context: context,
+            builder: (context) {
+              return const Dialog(
+                shape: RoundedRectangleBorder(),
+                insetPadding: EdgeInsets.zero,
+                child: AddEditTaskDialog(),
+              );
+            },
+          );
+        },
+        backgroundColor: const Color(0XFF8687E7),
+        shape: const CircleBorder(),
+        child: const Icon(Icons.add),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomNavigationBar(
+        items: navBarItems,
+        type: BottomNavigationBarType.fixed,
         backgroundColor: const Color(0xFF363636),
-        navBarStyle: NavBarStyle.style15,
-        animationSettings: const NavBarAnimationSettings(
-          screenTransitionAnimation: ScreenTransitionAnimationSettings(
-            // Screen transition animation on change of selected tab.
-            animateTabTransition: true,
-            duration: Duration(milliseconds: 200),
-            screenTransitionAnimationType: ScreenTransitionAnimationType.fadeIn,
-          ),
-        ),
-        padding: const EdgeInsets.only(top: 2),
+        currentIndex: selectedScreen,
+        onTap: (value) {
+          setState(() {
+            selectedScreen = value;
+          });
+        },
+      ),
+      // resizeToAvoidBottomInset: true,
+    );
+  }
+}
 
-        // Todo Change initial index
-        controller: PersistentTabController(initialIndex: 1),
-        screens: [
-          HomeScreen(),
-          CalenderScreen(),
-          AddScreen(),
-          FocusScreen(),
-          ProfileScreen(),
-        ],
-        items: [
-          PersistentBottomNavBarItem(
-              icon: SvgPicture.asset("lib/assets/images/home.svg"),
-              title: "Home"),
-          PersistentBottomNavBarItem(
-              icon: SvgPicture.asset("lib/assets/images/calendar.svg"),
-              title: "Calendar"),
-          PersistentBottomNavBarItem(
-            icon: Icon(Icons.add, color: Colors.white),
-            title: "Add",
+class AddEditTaskDialog extends StatelessWidget {
+  const AddEditTaskDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: const Color(0XFF363636),
+      padding: const EdgeInsets.all(14),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Text(
+            "Add Task",
+            style: TextStyle(fontSize: 20),
           ),
-          PersistentBottomNavBarItem(
-              icon: SvgPicture.asset("lib/assets/images/clock.svg"),
-              title: "Focus"),
-          PersistentBottomNavBarItem(
-            icon: SvgPicture.asset("lib/assets/images/user.svg"),
-            title: "Profile",
+          TextFormField(
+            decoration: const InputDecoration(hintText: "Title"),
           ),
+          TextFormField(
+            decoration: const InputDecoration(hintText: "Description"),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  IconButton(
+                      onPressed: () {},
+                      icon: SvgPicture.asset("lib/assets/images/timer.svg")),
+                  IconButton(
+                      onPressed: () {},
+                      icon: SvgPicture.asset("lib/assets/images/tag.svg")),
+                  IconButton(
+                      onPressed: () {},
+                      icon: SvgPicture.asset("lib/assets/images/flag.svg")),
+                ],
+              ),
+              IconButton(
+                  onPressed: () {},
+                  icon: SvgPicture.asset("lib/assets/images/send.svg")),
+            ],
+          )
         ],
       ),
     );
-    // )
   }
 }
