@@ -104,9 +104,11 @@ class AddEditTaskDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var titleController = TextEditingController();
+    var descController = TextEditingController();
     return Container(
       color: const Color(0XFF363636),
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.fromLTRB(14,14,14,0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -116,10 +118,13 @@ class AddEditTaskDialog extends StatelessWidget {
             style: TextStyle(fontSize: 20),
           ),
           TextFormField(
-            decoration: const InputDecoration(hintText: "Title"),
+            decoration: InputDecoration(hintText: "Title"),
+            controller: titleController,
+            // style: ,
           ),
           TextFormField(
             decoration: const InputDecoration(hintText: "Description"),
+            controller: descController,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -138,7 +143,18 @@ class AddEditTaskDialog extends StatelessWidget {
                 ],
               ),
               IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Todos().add(dateTime: selectedDateTime, item: TodoItem(
+                      title: titleController.text,
+                      desc: descController.text,
+                    ));
+
+                    tabViewSetState((){});
+
+                    // Reset Text Forms
+                    titleController.clear();
+                    descController.clear();
+                  },
                   icon: SvgPicture.asset("lib/assets/images/send.svg")),
             ],
           )

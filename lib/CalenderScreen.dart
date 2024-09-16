@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+/// Todo delete
+late Function tabViewSetState;
+int count = 0;
+
 /// backgroundColor: Color(0xFF8687E7),
 late double screenWidth;
 final List todosList = [
@@ -10,9 +14,7 @@ final List todosList = [
     title: "2",
   )
 ];
-// final Map<String, List<todoItem>> allTodosMap = {};
 DateTime selectedDateTime = DateTime.now(); // Just Initial Value
-
 const List<String> monthsNames = [
   "January",
   "February",
@@ -52,6 +54,7 @@ class _CalenderScreenState extends State<CalenderScreen> {
   Widget build(BuildContext context) {
     /// TODO delete
     tests();
+    tabViewSetState = setState;
 
     screenWidth = MediaQuery.of(context).size.width;
     setState(() {
@@ -239,12 +242,27 @@ class _CalenderScreenState extends State<CalenderScreen> {
                                     isChecked: false)![index];
                               },
                             ),
+                            // ListView.builder(
+                            //   itemCount: todosList.length,
+                            //   padding: EdgeInsets.symmetric(
+                            //       horizontal: 0.1 * screenWidth),
+                            //   itemBuilder: (context, index) {
+                            //     return todosList[index];
+                            //   },
+                            // ),
                             ListView.builder(
-                              itemCount: todosList.length,
+                              itemCount: Todos()
+                                  .getTodosByStatus(
+                                  dateTime: selectedDateTime,
+                                  isChecked: true)
+                                  ?.length ??
+                                  0,
                               padding: EdgeInsets.symmetric(
                                   horizontal: 0.1 * screenWidth),
                               itemBuilder: (context, index) {
-                                return todosList[index];
+                                return Todos().getTodosByStatus(
+                                    dateTime: selectedDateTime,
+                                    isChecked: true)![index];
                               },
                             ),
                           ]),
@@ -256,13 +274,6 @@ class _CalenderScreenState extends State<CalenderScreen> {
           ],
         ));
   }
-
-// void onCheckBoxChanged({required TodoItem todoItem, required bool checkBoxValue}){ /// TODO continue
-//   setState(() {
-//     todoItem.onCheckBoxChanged = onCheckBoxChanged;
-//     todoItem.isChecked = checkBoxValue;
-//   });
-// }
 }
 
 class TodoItem extends StatefulWidget {
@@ -296,7 +307,16 @@ class _TodoItemState extends State<TodoItem> {
             onChanged: (newValue) {
               setState(() {
                 widget.isChecked = newValue!;
-                // widget.onCheckBoxChanged(widget,newValue);
+                // Small delay to show the animation
+                /// TODO check the delay time
+                Future.delayed(
+                  Duration(milliseconds: 150),() {
+                    print("after 300ms");
+                    tabViewSetState(() {
+                      widget.isChecked = newValue!;
+                    });
+                  },
+                );
               });
             },
           ),
@@ -335,7 +355,7 @@ String formatDateTime(DateTime dateTime) {
 
 void tests() {
   // String selectedDateFormat = formatDateTime(selectedDateTime);
-  // DateTime dateTime2 = DateTime(2024, 9, 12);
+  DateTime dateTime2 = DateTime(2024, 9, 12);
   // String dateFormat2 = formatDateTime(dateTime2);
   // print("");
   // print("dateTime2");
@@ -343,11 +363,12 @@ void tests() {
   // print(dateTime2.toString().substring(0,0+4+6));
   // print("dateFormat2");
   // print(dateFormat2);
-  // Todos().add(
-  //     dateTime: dateTime2,
-  //     item: TodoItem(
-  //       title: "${Todos.todosMap[selectedDateTime]?.length}",desc: "dsdadw",
-  //     ));
+  Todos().add(
+      dateTime: dateTime2,
+      item: TodoItem(
+        title: "${count++}",
+        desc: "dsdadw",
+      ));
   // print(allTodosMap2().getTodos(dateTime2));
   print("completed");
   print(Todos()
@@ -385,50 +406,4 @@ class Todos {
         ?.where((element) => element.isChecked == isChecked)
         .toList();
   }
-}
-
-Widget TodoItem2({String? title, String? desc, bool isChecked = false}) {
-
-// late Function onCheckBoxChanged;
-  return Container(
-    height: 80,
-    decoration: BoxDecoration(
-        color: const Color(0XFF363636),
-        borderRadius: BorderRadius.circular(10)),
-    margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
-// padding: const EdgeInsets.symmetric(horizontal: 20),
-    child: Row(
-      children: [
-        Checkbox(
-          value: isChecked,
-          shape: const CircleBorder(),
-          onChanged: (newValue) {
-            // setState(() {
-              isChecked = newValue!;
-// widget.onCheckBoxChanged(widget,newValue);
-//             });
-          },
-        ),
-        Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (title == null || title!.isEmpty)
-                const SizedBox.shrink()
-              else
-                Text("${title}",
-                    overflow: TextOverflow.ellipsis, maxLines: 1),
-              if (desc == null || desc!.isEmpty)
-                const SizedBox.shrink()
-              else
-                Text("${desc}",
-                    overflow: TextOverflow.ellipsis, maxLines: 1)
-            ],
-          ),
-        ),
-// Column(),
-      ],
-    ),
-  );
 }
