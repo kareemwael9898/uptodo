@@ -21,8 +21,10 @@ Widget myApp() {
 }
 
 List navBarScreens = [
-  HomeScreen(), const CalenderScreen(), // AddScreen(),
-  FocusScreen(), ProfileScreen(),
+  HomeScreen(),
+  const CalenderScreen(),
+  FocusScreen(),
+  ProfileScreen(),
 ];
 List<BottomNavigationBarItem> navBarItems = [
   BottomNavigationBarItem(
@@ -30,10 +32,6 @@ List<BottomNavigationBarItem> navBarItems = [
   BottomNavigationBarItem(
       icon: SvgPicture.asset("lib/assets/images/calendar.svg"),
       label: "Calendar"),
-  // BottomNavigationBarItem(
-  //   icon: Icon(Icons.add, color: Colors.white),
-  //   label: "Add",
-  // ),
   BottomNavigationBarItem(
       icon: SvgPicture.asset("lib/assets/images/clock.svg"), label: "Focus"),
   BottomNavigationBarItem(
@@ -50,17 +48,9 @@ class Screen extends StatefulWidget {
 }
 
 class _ScreenState extends State<Screen> {
-  // int selectedScreen = 1;
-
   @override
   @override
   Widget build(BuildContext context) {
-    //     animationSettings: const NavBarAnimationSettings(
-    //       screenTransitionAnimation: ScreenTransitionAnimationSettings(
-    //         // Screen transition animation on change of selected tab.
-    //         animateTabTransition: true,
-    //         duration: Duration(milliseconds: 200),
-    //         screenTransitionAnimationType: ScreenTransitionAnimationType.fadeIn,
     return Scaffold(
       body: AnimatedSwitcher(
         duration: const Duration(milliseconds: 300),
@@ -68,7 +58,7 @@ class _ScreenState extends State<Screen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          print("Clicked -> FloatingActionButton");
+          //print("Clicked -> FloatingActionButton");
           showDialog(
             context: context,
             builder: (context) {
@@ -152,11 +142,11 @@ class AddOrEditTaskDialog extends StatelessWidget {
                         ));
 
                     if (selectedScreen == 1) {
-                      print("======= CalenderScreen HERE");
+                      //print("======= CalenderScreen HERE");
                       tabViewSetState(() {});
-                    }else if(selectedScreen == 3){
-                      print("======= ProfileScreen HERE");
-                      profileScreenSetState((){});
+                    } else if (selectedScreen == 3) {
+                      //print("======= ProfileScreen HERE");
+                      profileScreenSetState(() {});
                     }
 
                     // Reset Text Forms

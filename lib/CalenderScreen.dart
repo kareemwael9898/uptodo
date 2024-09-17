@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Todo delete
 late Function tabViewSetState;
-int count = 0;
-
-/// backgroundColor: Color(0xFF8687E7),
 late double screenWidth;
 final List todosList = [
   TodoItem(
@@ -52,15 +48,11 @@ class CalenderScreen extends StatefulWidget {
 class _CalenderScreenState extends State<CalenderScreen> {
   @override
   Widget build(BuildContext context) {
-    /// TODO delete
-    tests();
     tabViewSetState = setState;
 
     screenWidth = MediaQuery.of(context).size.width;
     setState(() {
       todosList;
-
-      /// TODO delete
     });
     return Scaffold(
         appBar: AppBar(
@@ -139,7 +131,6 @@ class _CalenderScreenState extends State<CalenderScreen> {
                             child: Column(
                               children: [
                                 Text(
-                                  //TODO edited
                                   "  $dayName  ",
                                   style: TextStyle(
                                       fontSize: 15,
@@ -150,7 +141,7 @@ class _CalenderScreenState extends State<CalenderScreen> {
                                 ),
                                 Text("${index + 1}",
                                     style: const TextStyle(fontSize: 18)),
-                                Icon(Icons.circle, // Todo colored if has todos
+                                Icon(Icons.circle,
                                     size: 4,
                                     color: (Todos()
                                                 .getTodos(selectedDateTime
@@ -216,56 +207,43 @@ class _CalenderScreenState extends State<CalenderScreen> {
                         indicator:
                             const BoxDecoration(color: Color(0xFF8687E7)),
                         onTap: (value) {
-                          // print(value);
                           setState(() {});
                         },
                       ),
                     ),
                     Expanded(
-                      child: TabBarView(
-                          // physics: const NeverScrollableScrollPhysics(),
-                          children: [
-                            /// todayTab
-                            ListView.builder(
-                              // itemCount: Todos().selectedDayTodosLength(selectedDateTime),
-                              itemCount: Todos()
-                                      .getTodosByStatus(
-                                          dateTime: selectedDateTime,
-                                          isChecked: false)
-                                      ?.length ??
-                                  0,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 0.1 * screenWidth),
-                              itemBuilder: (context, index) {
-                                return Todos().getTodosByStatus(
-                                    dateTime: selectedDateTime,
-                                    isChecked: false)![index];
-                              },
-                            ),
-                            // ListView.builder(
-                            //   itemCount: todosList.length,
-                            //   padding: EdgeInsets.symmetric(
-                            //       horizontal: 0.1 * screenWidth),
-                            //   itemBuilder: (context, index) {
-                            //     return todosList[index];
-                            //   },
-                            // ),
-                            ListView.builder(
-                              itemCount: Todos()
-                                      .getTodosByStatus(
-                                          dateTime: selectedDateTime,
-                                          isChecked: true)
-                                      ?.length ??
-                                  0,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 0.1 * screenWidth),
-                              itemBuilder: (context, index) {
-                                return Todos().getTodosByStatus(
-                                    dateTime: selectedDateTime,
-                                    isChecked: true)![index];
-                              },
-                            ),
-                          ]),
+                      child: TabBarView(children: [
+                        ListView.builder(
+                          itemCount: Todos()
+                                  .getTodosByStatus(
+                                      dateTime: selectedDateTime,
+                                      isChecked: false)
+                                  ?.length ??
+                              0,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 0.1 * screenWidth),
+                          itemBuilder: (context, index) {
+                            return Todos().getTodosByStatus(
+                                dateTime: selectedDateTime,
+                                isChecked: false)![index];
+                          },
+                        ),
+                        ListView.builder(
+                          itemCount: Todos()
+                                  .getTodosByStatus(
+                                      dateTime: selectedDateTime,
+                                      isChecked: true)
+                                  ?.length ??
+                              0,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 0.1 * screenWidth),
+                          itemBuilder: (context, index) {
+                            return Todos().getTodosByStatus(
+                                dateTime: selectedDateTime,
+                                isChecked: true)![index];
+                          },
+                        ),
+                      ]),
                     )
                   ],
                 ),
@@ -282,8 +260,6 @@ class TodoItem extends StatefulWidget {
   bool isChecked;
   TimeOfDay timeOfDay = TimeOfDay.now();
 
-  // late Function onCheckBoxChanged;
-
   TodoItem({this.title, this.desc, this.isChecked = false});
 
   @override
@@ -299,7 +275,6 @@ class _TodoItemState extends State<TodoItem> {
           color: const Color(0XFF363636),
           borderRadius: BorderRadius.circular(10)),
       margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
-      // padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(
         children: [
           Checkbox(
@@ -309,11 +284,10 @@ class _TodoItemState extends State<TodoItem> {
               setState(() {
                 widget.isChecked = newValue!;
                 // Small delay to show the animation
-                /// TODO check the delay time
                 Future.delayed(
                   Duration(milliseconds: 150),
                   () {
-                    print("after 300ms");
+                    //print("after 300ms");
                     tabViewSetState(() {
                       widget.isChecked = newValue!;
                     });
@@ -336,7 +310,6 @@ class _TodoItemState extends State<TodoItem> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text("Today at ${widget.timeOfDay.format(context)}"),
-                    // Flag Container
                   ],
                 )
               ],
@@ -354,33 +327,6 @@ int countDaysPerMonth({required int year, required int month}) {
 
 String formatDateTime(DateTime dateTime) {
   return "${dateTime.year}-${dateTime.month}-${dateTime.day}";
-}
-
-void tests() {
-  // String selectedDateFormat = formatDateTime(selectedDateTime);
-  // DateTime dateTime2 = DateTime(2024, 9, 12);
-  // String dateFormat2 = formatDateTime(dateTime2);
-  // print("");
-  // print("dateTime2");
-  // print(dateTime2);
-  // print(dateTime2.toString().substring(0,0+4+6));
-  // print("dateFormat2");
-  // print(dateFormat2);
-  // Todos().add(
-  //     dateTime: dateTime2,
-  //     item: TodoItem(
-  //       title: "${count++}",
-  //       desc: "dsdadw",
-  //     ));
-  // print(allTodosMap2().getTodos(dateTime2));
-  print("completed");
-  print(Todos()
-      .getTodosByStatus(dateTime: selectedDateTime, isChecked: true)
-      ?.length);
-  print("unCompleted");
-  print(Todos()
-      .getTodosByStatus(dateTime: selectedDateTime, isChecked: false)
-      ?.length);
 }
 
 class Todos {

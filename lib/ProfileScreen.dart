@@ -48,8 +48,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     decoration: BoxDecoration(
                         color: const Color(0XFF363636),
                         borderRadius: BorderRadius.circular(4)),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 35, vertical: 17),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 35, vertical: 17),
                     child: Text(
                       "${countAllByStatus(isChecked: false)} Tasks Left",
                       style: const TextStyle(fontSize: 16),
@@ -59,8 +59,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     decoration: BoxDecoration(
                         color: const Color(0XFF363636),
                         borderRadius: BorderRadius.circular(4)),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 35, vertical: 17),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 35, vertical: 17),
                     child: Text(
                       "${countAllByStatus(isChecked: true)} Tasks done",
                       style: const TextStyle(fontSize: 16),
@@ -73,31 +73,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ListTile(
                 leading: SvgPicture.asset("lib/assets/images/settings.svg",
                     color: Colors.white),
-                title: const Text("App Settings", style: TextStyle(fontSize: 16)),
+                title:
+                    const Text("App Settings", style: TextStyle(fontSize: 16)),
                 trailing: const Icon(Icons.arrow_forward_ios),
               ),
-      
               const Text("Account", style: TextStyle(fontSize: 14)),
               ListTile(
                 leading: SvgPicture.asset("lib/assets/images/user.svg",
                     color: Colors.white),
-                title: const Text("Change account name", style: TextStyle(fontSize: 16)),
+                title: const Text("Change account name",
+                    style: TextStyle(fontSize: 16)),
                 trailing: const Icon(Icons.arrow_forward_ios),
               ),
               ListTile(
                 leading: SvgPicture.asset("lib/assets/images/key.svg",
                     color: Colors.white),
-                title: const Text("Change account password", style: TextStyle(fontSize: 16)),
+                title: const Text("Change account password",
+                    style: TextStyle(fontSize: 16)),
                 trailing: const Icon(Icons.arrow_forward_ios),
               ),
               ListTile(
                 leading: SvgPicture.asset("lib/assets/images/camera.svg",
                     color: Colors.white),
-                title: const Text("Change account Image", style: TextStyle(fontSize: 16)),
+                title: const Text("Change account Image",
+                    style: TextStyle(fontSize: 16)),
                 trailing: const Icon(Icons.arrow_forward_ios),
               ),
-
-
               const Text("Uptodo", style: TextStyle(fontSize: 14)),
               ListTile(
                 leading: SvgPicture.asset("lib/assets/images/menu.svg",
@@ -114,7 +115,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ListTile(
                 leading: SvgPicture.asset("lib/assets/images/flash.svg",
                     color: Colors.white),
-                title: const Text("Help & Feedback", style: TextStyle(fontSize: 16)),
+                title: const Text("Help & Feedback",
+                    style: TextStyle(fontSize: 16)),
                 trailing: const Icon(Icons.arrow_forward_ios),
               ),
               ListTile(
@@ -126,7 +128,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ListTile(
                 leading: SvgPicture.asset("lib/assets/images/logout.svg",
                     color: Colors.red),
-                title: const Text("Log out", style: TextStyle(fontSize: 16,color: Colors.red)),
+                title: const Text("Log out",
+                    style: TextStyle(fontSize: 16, color: Colors.red)),
               ),
             ],
           ),
