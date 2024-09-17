@@ -6,6 +6,8 @@ import 'FocusScreen.dart';
 import 'HomeScreen.dart';
 import 'ProfileScreen.dart';
 
+int selectedScreen = 1;
+
 void main() {
   runApp(myApp());
 }
@@ -48,7 +50,7 @@ class Screen extends StatefulWidget {
 }
 
 class _ScreenState extends State<Screen> {
-  int selectedScreen = 1;
+  // int selectedScreen = 1;
 
   @override
   @override
@@ -73,7 +75,7 @@ class _ScreenState extends State<Screen> {
               return const Dialog(
                 shape: RoundedRectangleBorder(),
                 insetPadding: EdgeInsets.zero,
-                child: AddEditTaskDialog(),
+                child: AddOrEditTaskDialog(),
               );
             },
           );
@@ -94,13 +96,12 @@ class _ScreenState extends State<Screen> {
           });
         },
       ),
-      // resizeToAvoidBottomInset: true,
     );
   }
 }
 
-class AddEditTaskDialog extends StatelessWidget {
-  const AddEditTaskDialog({super.key});
+class AddOrEditTaskDialog extends StatelessWidget {
+  const AddOrEditTaskDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +109,7 @@ class AddEditTaskDialog extends StatelessWidget {
     var descController = TextEditingController();
     return Container(
       color: const Color(0XFF363636),
-      padding: const EdgeInsets.fromLTRB(14,14,14,0),
+      padding: const EdgeInsets.fromLTRB(14, 14, 14, 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -120,7 +121,6 @@ class AddEditTaskDialog extends StatelessWidget {
           TextFormField(
             decoration: InputDecoration(hintText: "Title"),
             controller: titleController,
-            // style: ,
           ),
           TextFormField(
             decoration: const InputDecoration(hintText: "Description"),
@@ -144,12 +144,20 @@ class AddEditTaskDialog extends StatelessWidget {
               ),
               IconButton(
                   onPressed: () {
-                    Todos().add(dateTime: selectedDateTime, item: TodoItem(
-                      title: titleController.text,
-                      desc: descController.text,
-                    ));
+                    Todos().add(
+                        dateTime: selectedDateTime,
+                        item: TodoItem(
+                          title: titleController.text,
+                          desc: descController.text,
+                        ));
 
-                    tabViewSetState((){});
+                    if (selectedScreen == 1) {
+                      print("======= CalenderScreen HERE");
+                      tabViewSetState(() {});
+                    }else if(selectedScreen == 3){
+                      print("======= ProfileScreen HERE");
+                      profileScreenSetState((){});
+                    }
 
                     // Reset Text Forms
                     titleController.clear();

@@ -252,10 +252,10 @@ class _CalenderScreenState extends State<CalenderScreen> {
                             // ),
                             ListView.builder(
                               itemCount: Todos()
-                                  .getTodosByStatus(
-                                  dateTime: selectedDateTime,
-                                  isChecked: true)
-                                  ?.length ??
+                                      .getTodosByStatus(
+                                          dateTime: selectedDateTime,
+                                          isChecked: true)
+                                      ?.length ??
                                   0,
                               padding: EdgeInsets.symmetric(
                                   horizontal: 0.1 * screenWidth),
@@ -280,6 +280,7 @@ class TodoItem extends StatefulWidget {
   String? title;
   String? desc;
   bool isChecked;
+  TimeOfDay timeOfDay = TimeOfDay.now();
 
   // late Function onCheckBoxChanged;
 
@@ -310,7 +311,8 @@ class _TodoItemState extends State<TodoItem> {
                 // Small delay to show the animation
                 /// TODO check the delay time
                 Future.delayed(
-                  Duration(milliseconds: 150),() {
+                  Duration(milliseconds: 150),
+                  () {
                     print("after 300ms");
                     tabViewSetState(() {
                       widget.isChecked = newValue!;
@@ -330,15 +332,16 @@ class _TodoItemState extends State<TodoItem> {
                 else
                   Text("${widget.title}",
                       overflow: TextOverflow.ellipsis, maxLines: 1),
-                if (widget.desc == null || widget.desc!.isEmpty)
-                  const SizedBox.shrink()
-                else
-                  Text("${widget.desc}",
-                      overflow: TextOverflow.ellipsis, maxLines: 1)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Today at ${widget.timeOfDay.format(context)}"),
+                    // Flag Container
+                  ],
+                )
               ],
             ),
           ),
-          // Column(),
         ],
       ),
     );
@@ -355,7 +358,7 @@ String formatDateTime(DateTime dateTime) {
 
 void tests() {
   // String selectedDateFormat = formatDateTime(selectedDateTime);
-  DateTime dateTime2 = DateTime(2024, 9, 12);
+  // DateTime dateTime2 = DateTime(2024, 9, 12);
   // String dateFormat2 = formatDateTime(dateTime2);
   // print("");
   // print("dateTime2");
@@ -363,12 +366,12 @@ void tests() {
   // print(dateTime2.toString().substring(0,0+4+6));
   // print("dateFormat2");
   // print(dateFormat2);
-  Todos().add(
-      dateTime: dateTime2,
-      item: TodoItem(
-        title: "${count++}",
-        desc: "dsdadw",
-      ));
+  // Todos().add(
+  //     dateTime: dateTime2,
+  //     item: TodoItem(
+  //       title: "${count++}",
+  //       desc: "dsdadw",
+  //     ));
   // print(allTodosMap2().getTodos(dateTime2));
   print("completed");
   print(Todos()
@@ -386,10 +389,8 @@ class Todos {
   void add({required DateTime dateTime, required TodoItem item}) {
     String key = formatDateTime(dateTime);
     if (todosMap.containsKey(key)) {
-      print("Contains");
       todosMap[key]!.add(item);
     } else {
-      print("Not Contains");
       todosMap.putIfAbsent(key, () => [item]);
     }
   }
